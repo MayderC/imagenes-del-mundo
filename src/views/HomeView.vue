@@ -78,10 +78,6 @@ export default defineComponent({
     SearchInput,
   },
 
-  created() {
-    console.log(login("may-dev@outlook.es", "3e84c6db2aef059ffb77"));
-  },
-
   methods: {
     async search(name: string) {
       const imagesWithoutSeller = await getImages(name);
@@ -92,7 +88,7 @@ export default defineComponent({
     },
 
     like() {
-      console.log("lik");
+      console.log("like");
     },
 
     addPoints(sellerID: number) {
