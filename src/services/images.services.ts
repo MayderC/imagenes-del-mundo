@@ -69,7 +69,13 @@ const images_results = [
 ];
 
 export const getImages = async (name: string) => {
-  console.log(name);
-  const response = fetch("");
+  const response = await fetch(
+    "https://api.unsplash.com/search/photos?&query=office&&client_id=" +
+      process.env.VUE_APP_ACCES_PUBLIC_KEY
+  );
+
+  const data = await response.json();
+
+  console.log(data);
   return Promise.resolve(JSON.parse(JSON.stringify(images_results)));
 };

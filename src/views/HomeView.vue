@@ -26,7 +26,7 @@
         </div>
         <button
           type="button"
-          @click="addPoints(img.sellerID)"
+          @click="like(img.sellerID)"
           class="border flex items-center gap-1 bg-purple-400 text-white rounded-md px-4 py-2 m-2 mt-6 transition duration-500 ease select-none hover:bg-purple-500 focus:outline-none focus:shadow-outline"
         >
           <img
@@ -81,28 +81,31 @@ export default defineComponent({
   methods: {
     async search(name: string) {
       const imagesWithoutSeller = await getImages(name);
-      console.log(imagesWithoutSeller);
       const firstThreeImages =
         this.selectFirstThree<IImageGoogleAPI>(imagesWithoutSeller);
-      this.images = this.assignSeller(firstThreeImages);
+      this.images = this.assignSellerIDToImage(firstThreeImages);
     },
 
-    like() {
-      console.log("like");
+    like(sellerID: number) {
+      const index = this.addPoints(sellerID);
+      if (!this.isWinner(index)) return;
+
+      //winner
+      //todo: next steps
     },
 
-    addPoints(sellerID: number) {
+    //this method also, return the index where the points were added
+    addPoints(sellerID: number): number {
       for (let i = 0; i < this.sellers.length; i++) {
         if (this.sellers[i].id === sellerID) {
           this.sellers[i].points += 3;
-          console.log(typeof i);
-          this.checkWinner(i);
-          return;
+          return i;
         }
       }
+      return -1;
     },
 
-    assignSeller(images: IImageGoogleAPI[]): IImage[] {
+    assignSellerIDToImage(images: IImageGoogleAPI[]): IImage[] {
       const sellerIDs = this.sellers.map((s) => s.id);
       return images.map((img, index) => ({
         ...img,
@@ -114,8 +117,8 @@ export default defineComponent({
       return arr.splice(0, 3);
     },
 
-    checkWinner(index: number) {
-      console.log(index);
+    isWinner(index: number) {
+      return this.sellers[index].points >= 20;
     },
   },
 });

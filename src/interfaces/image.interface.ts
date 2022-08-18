@@ -9,6 +9,8 @@ export interface IImageGoogleAPI {
   in_stock?: boolean;
 }
 
+export interface IImageUsplash {}
+
 export interface IImage extends IImageGoogleAPI {
   sellerID: number;
 }
