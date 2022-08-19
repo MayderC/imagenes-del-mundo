@@ -7,17 +7,33 @@
     </h1>
     <search-input @search="search"></search-input>
 
-    <loading-spinner
-      v-if="!canShowSpinner"
-      class="mt-6 m-auto"
-    ></loading-spinner>
-    <section class="flex gap-4 justify-center flex-wrap min-w-[300px] p-6">
+    <section class="flex gap-4 justify-center flex-wrap mt-6 min-w-[300px] p-6">
+      <loading-spinner
+        v-if="canShowSpinner"
+        class="mt-6 m-auto"
+      ></loading-spinner>
       <card-image
         v-for="img in images"
         :image="img"
         :key="img.id"
         @like="like"
       ></card-image>
+      <h2
+        v-if="
+          total_points === 0 && images.length < 1 && canShowSpinner == false
+        "
+        class="font-extrabol text-blue-200 text-4xl"
+      >
+        Busca una imagen y elige la que más te guste.
+      </h2>
+      <h1
+        v-else-if="
+          total_points > 0 && images.length < 1 && canShowSpinner == false
+        "
+        class="font-extrabol text-blue-200 text-4xl"
+      >
+        Continúa buscado tus imágenes favoritas.
+      </h1>
     </section>
   </div>
 </template>
@@ -30,6 +46,7 @@ import { IImage, IUnsplashAPI } from "@/interfaces/image.interface";
 import LoadingSpinner from "@/components/LoadingSpinner.vue";
 import SearchInput from "@/components/SearchInput.vue";
 import CardImage from "@/components/CardImage.vue";
+import { LIMIT_TO_WIN, POINTS } from "@/constants";
 //import { mapState } from "vuex";
 
 interface IComponentState {
@@ -37,6 +54,7 @@ interface IComponentState {
   sellers: ISeller[];
   images: IImage[];
   canShowSpinner: boolean;
+  total_points: number;
 }
 
 export default defineComponent({
@@ -51,6 +69,7 @@ export default defineComponent({
       ] as ISeller[],
       images: [] as IImage[],
       canShowSpinner: false,
+      total_points: 0,
     };
   },
   components: {
@@ -61,10 +80,13 @@ export default defineComponent({
 
   methods: {
     async search(name: string) {
+      this.images = [];
+      this.canShowSpinner = true;
       const imagesWithoutSeller = await getImages(name);
       const firstThreeImages =
         this.selectFirstThree<IUnsplashAPI>(imagesWithoutSeller);
       this.images = this.assignSellerIDToImage(firstThreeImages);
+      this.canShowSpinner = false;
     },
 
     like(sellerID: number) {
@@ -79,7 +101,9 @@ export default defineComponent({
     addPoints(sellerID: number): number {
       for (let i = 0; i < this.sellers.length; i++) {
         if (this.sellers[i].id === sellerID) {
-          this.sellers[i].points += 3;
+          this.sellers[i].points += POINTS;
+          this.total_points += POINTS;
+          this.images = [];
           return i;
         }
       }
@@ -94,12 +118,13 @@ export default defineComponent({
       }));
     },
 
+    //todo, rename and change, 3 to sellers.length
     selectFirstThree<T>(arr: T[]): T[] {
       return arr.splice(0, 3);
     },
 
     isWinner(index: number) {
-      return this.sellers[index].points >= 20;
+      return this.sellers[index].points >= LIMIT_TO_WIN;
     },
   },
 });

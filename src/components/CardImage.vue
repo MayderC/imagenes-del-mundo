@@ -1,8 +1,8 @@
 <template>
   <div class="flex flex-col items-center bg-slate-200 p-3 rounded-md">
-    <div class="w-36 h-32 flex justify-center">
+    <div class="w-48 h-44 flex justify-center">
       <img
-        class="block h-32 w-36 rounded-md object-cover"
+        class="block h-44 w-48 rounded-md object-cover"
         :src="image.urls.small"
         alt=""
       />
