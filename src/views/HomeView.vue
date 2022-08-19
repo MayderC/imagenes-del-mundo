@@ -3,7 +3,7 @@
     <h1
       class="font-extrabold text-transparent h-24 text-5xl bg-clip-text bg-gradient-to-r from-blue-500 to-pink-500"
     >
-      Imaganes del mundo
+      Imágenes del mundo
     </h1>
     <search-input @search="search"></search-input>
 
@@ -12,32 +12,12 @@
       class="mt-6 m-auto"
     ></loading-spinner>
     <section class="flex gap-4 justify-center flex-wrap min-w-[300px] p-6">
-      <div
-        class="flex flex-col items-center bg-slate-200 p-3 rounded-md"
+      <card-image
         v-for="img in images"
-        :key="img.link"
-      >
-        <div class="w-36 h-32 flex justify-center">
-          <img
-            class="block h-32 w-32 object-cover"
-            :src="img.original"
-            alt=""
-          />
-        </div>
-        <button
-          type="button"
-          @click="like(img.sellerID)"
-          class="border flex items-center gap-1 bg-purple-400 text-white rounded-md px-4 py-2 m-2 mt-6 transition duration-500 ease select-none hover:bg-purple-500 focus:outline-none focus:shadow-outline"
-        >
-          <img
-            class="block w-6"
-            src="../assets/img/heart_like.svg"
-            alt=""
-            srcset=""
-          />
-          Me gusta
-        </button>
-      </div>
+        :image="img"
+        :key="img.id"
+        @like="like"
+      ></card-image>
     </section>
   </div>
 </template>
@@ -46,10 +26,10 @@
 import { getImages } from "@/services/images.services";
 import { ISeller } from "@/interfaces/seller.interface";
 import { defineComponent } from "vue";
-import { IImageGoogleAPI, IImage } from "@/interfaces/image.interface";
+import { IImage, IUnsplashAPI } from "@/interfaces/image.interface";
 import LoadingSpinner from "@/components/LoadingSpinner.vue";
 import SearchInput from "@/components/SearchInput.vue";
-import { login } from "@/services/auth.services";
+import CardImage from "@/components/CardImage.vue";
 //import { mapState } from "vuex";
 
 interface IComponentState {
@@ -76,13 +56,14 @@ export default defineComponent({
   components: {
     LoadingSpinner,
     SearchInput,
+    CardImage,
   },
 
   methods: {
     async search(name: string) {
       const imagesWithoutSeller = await getImages(name);
       const firstThreeImages =
-        this.selectFirstThree<IImageGoogleAPI>(imagesWithoutSeller);
+        this.selectFirstThree<IUnsplashAPI>(imagesWithoutSeller);
       this.images = this.assignSellerIDToImage(firstThreeImages);
     },
 
@@ -105,7 +86,7 @@ export default defineComponent({
       return -1;
     },
 
-    assignSellerIDToImage(images: IImageGoogleAPI[]): IImage[] {
+    assignSellerIDToImage(images: IUnsplashAPI[]): IImage[] {
       const sellerIDs = this.sellers.map((s) => s.id);
       return images.map((img, index) => ({
         ...img,
