@@ -1,3 +1,5 @@
+import { IInvoiceRequest } from "@/interfaces/invoice.interface";
+import { IInvoiceResponse } from "@/interfaces/invoiceResponse.interface";
 import { ISeller } from "./../interfaces/seller.interface";
 
 export const getSellers = async (token: string): Promise<ISeller[]> => {
@@ -14,6 +16,18 @@ export const getSellers = async (token: string): Promise<ISeller[]> => {
   return data;
 };
 
-export const makeInvioce = async () => {
-  console.log("make invoice");
+export const makeInvioce = async (
+  data: IInvoiceRequest
+): Promise<IInvoiceResponse> => {
+  const response = await fetch("https://api.alegra.com/api/v1/invoices", {
+    method: "POST",
+    headers: {
+      Accept: "*/*",
+      authorization: "Basic " + "",
+      "accept-encoding": "gzip, deflate",
+      "content-type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+  return await response.json();
 };

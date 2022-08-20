@@ -1,6 +1,6 @@
 <template>
   <div
-    class="bg-zinc-500 text-white text-lg text-left bg-gradient-to-br from-purple-700 to-purple-400 rounded-md p-4"
+    class="bg-zinc-500 text-zinc-400 text-lg text-left bg-gradient-to-br from-zinc-900 to-zinc-900 rounded-md p-4"
   >
     <p class="">{{ seller.name }}</p>
     <p class="">Actuales: {{ seller.points }}</p>

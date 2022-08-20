@@ -2,7 +2,7 @@ export interface IItem {
   id: number;
   price: number;
   quantity: number;
-  description: string;
+  description?: string;
   discount?: number;
 }
 
