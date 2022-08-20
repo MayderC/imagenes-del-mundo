@@ -3,7 +3,7 @@ import { IState } from "./../interfaces/store.interface";
 import { ISeller } from "./../interfaces/seller.interface";
 import { login } from "./../services/auth.services";
 import { getSellers } from "./../services/alegra.services";
-import { SELLER_ACTIVE } from "@/constants";
+import { SELLER_ACTIVE, START_POINTS } from "@/constants";
 import { POINTS } from "./../constants/index";
 
 export default createStore<IState>({
@@ -55,9 +55,11 @@ export default createStore<IState>({
     async actionGetSellers(ctx) {
       const sellers = await getSellers(ctx.state.token);
       //these seller don't have the points property, was used map to add
-      const sellersActive = sellers.filter((s) => s.status === SELLER_ACTIVE);
-      const sellerwithPoints = sellersActive.map((s) => ({ ...s, points: 0 }));
-      ctx.commit("setSellers", sellerwithPoints);
+      const activeSeller = sellers.filter((s) => s.status === SELLER_ACTIVE);
+      const sellerWithPoints = activeSeller.map((s) => {
+        return { ...s, points: START_POINTS };
+      });
+      ctx.commit("setSellers", sellerWithPoints);
     },
   },
   modules: {},

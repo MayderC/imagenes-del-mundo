@@ -26,8 +26,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   if (store.state.thereWinner == false && to.path === "/invoice") {
-    next("/");
-    return;
+    return next("/");
   }
   next();
 });
