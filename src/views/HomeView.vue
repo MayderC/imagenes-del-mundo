@@ -5,9 +5,11 @@
     >
       Imágenes del mundo
     </h1>
-    <span class="text-cyan-200 text-left font-bold underline cursor-pointer"
-      >Ver vendedores</span
+    <p
+      class="text-cyan-200 mt-6 text-right absolute bottom-0 font-bold underline cursor-pointer"
     >
+      Ver vendedores
+    </p>
     <search-input @search="search"></search-input>
 
     <section
@@ -23,22 +25,24 @@
         :key="img.id"
         @like="like"
       ></card-image>
-      <h2
-        v-if="
-          total_points === 0 && images.length < 1 && canShowSpinner == false
-        "
-        class="font-extrabol text-blue-200 text-4xl"
-      >
-        Busca una imagen y elige la que más te guste.
-      </h2>
-      <h1
-        v-else-if="
-          total_points > 0 && images.length < 1 && canShowSpinner == false
-        "
-        class="font-extrabol text-blue-200 text-4xl"
-      >
-        Continúa buscado tus imágenes favoritas.
-      </h1>
+      <div v-if="!thereWinner">
+        <h2
+          v-if="
+            total_points === 0 && images.length < 1 && canShowSpinner == false
+          "
+          class="font-extrabol text-blue-200 text-4xl"
+        >
+          Busca una imagen y elige la que más te guste.
+        </h2>
+        <h1
+          v-else-if="
+            total_points > 0 && images.length < 1 && canShowSpinner == false
+          "
+          class="font-extrabol text-blue-200 text-4xl"
+        >
+          Continúa buscado tus imágenes favoritas.
+        </h1>
+      </div>
     </section>
     <seller-list :sellers="sellers"></seller-list>
     <show-seller-winner
@@ -50,7 +54,6 @@
 
 <script lang="ts">
 import { getImages } from "@/services/images.services";
-import { ISeller } from "@/interfaces/seller.interface";
 import { defineComponent } from "vue";
 import { IImage, IUnsplashAPI } from "@/interfaces/image.interface";
 import LoadingSpinner from "@/components/LoadingSpinner.vue";
@@ -65,8 +68,6 @@ interface IComponentState {
   imageName: "";
   images: IImage[];
   canShowSpinner: boolean;
-  winner: ISeller;
-  thereWinner: boolean;
 }
 
 export default defineComponent({
@@ -76,8 +77,6 @@ export default defineComponent({
       imageName: "",
       images: [] as IImage[],
       canShowSpinner: false,
-      winner: {} as ISeller,
-      thereWinner: false,
     };
   },
   components: {
@@ -92,10 +91,16 @@ export default defineComponent({
     this.actionGetSellers();
   },
   computed: {
-    ...mapState(["sellers", "total_points"]),
+    ...mapState(["sellers", "total_points", "winner", "thereWinner"]),
   },
   methods: {
-    ...mapMutations(["setToken", "addPointsToSeller", "sumTotalPoints"]),
+    ...mapMutations([
+      "setToken",
+      "addPointsToSeller",
+      "sumTotalPoints",
+      "setWinner",
+      "setThereWinner",
+    ]),
     ...mapActions(["actionGetSellers"]),
 
     async search(name: string) {
@@ -103,8 +108,9 @@ export default defineComponent({
       this.canShowSpinner = true;
 
       const imagesWithoutSeller = await getImages(name);
-      const firstImages = this.selectImages(imagesWithoutSeller);
+      if (imagesWithoutSeller.length < this.sellers) return;
 
+      const firstImages = this.selectImages(imagesWithoutSeller);
       this.canShowSpinner = false;
       this.images = this.assignSellerIDToImage(firstImages);
     },
@@ -113,8 +119,8 @@ export default defineComponent({
       const index = this.sellerToaddPoints(sellerID);
       if (this.isWinner(index) == false || index === -1) return;
 
-      this.winner = this.sellers[index];
-      this.thereWinner = true;
+      this.setWinner(this.sellers[index]);
+      this.setThereWinner(true);
     },
 
     makeInvoice() {

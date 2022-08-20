@@ -2,11 +2,13 @@
   <div
     class="bg-zinc-500 text-white text-lg text-left bg-gradient-to-br from-purple-700 to-purple-400 rounded-md p-4"
   >
-    <p class="">Nombre: {{ seller.name }}</p>
-
+    <p class="">{{ seller.name }}</p>
     <p class="">Actuales: {{ seller.points }}</p>
-    <p class="">Restantes: {{ limit - seller.points }}</p>
-    <p>Meta: {{ limit }}</p>
+
+    <!--ternary, dont show negative number-->
+    <p class="">
+      Restantes: {{ limit - seller.points > 0 ? limit - seller.points : 0 }}
+    </p>
   </div>
 </template>
 

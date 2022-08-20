@@ -11,10 +11,10 @@ export default createStore<IState>({
     sellers: [],
     token: "",
     total_points: 0,
+    winner: {} as ISeller,
+    thereWinner: false,
   },
-  getters: {
-    sellersID: (state: IState) => state.sellers.map((s) => s.id),
-  },
+  getters: {},
   mutations: {
     setSellers(state: IState, sellers: ISeller[]) {
       state.sellers = sellers;
@@ -28,11 +28,27 @@ export default createStore<IState>({
       state.total_points += POINTS;
     },
 
+    resetPoints(state: IState) {
+      state.sellers.forEach((s) => (s.points = 0));
+    },
+
+    resetTotalPoints(state: IState) {
+      state.total_points = 0;
+    },
+
     setToken(state: IState) {
       state.token = login(
         process.env.VUE_APP_ALEGRA_EMAIL,
         process.env.VUE_APP_ALEGRA_TOKEN
       );
+    },
+
+    setThereWinner(state: IState, status: boolean) {
+      state.thereWinner = status;
+    },
+
+    setWinner(state: IState, winner: ISeller) {
+      state.winner = { ...winner };
     },
   },
   actions: {
