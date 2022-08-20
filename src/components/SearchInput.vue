@@ -44,6 +44,7 @@ export default defineComponent({
   methods: {
     search() {
       this.$emit("search", this.toSearch);
+      this.toSearch = "";
     },
   },
 });

@@ -1,11 +1,12 @@
 <template>
   <div
-    class="bg-zinc-500 bg-gradient-to-br from-blue-500 to-pink-500 rounded-md p-4"
+    class="bg-zinc-500 text-white text-lg text-left bg-gradient-to-br from-purple-700 to-purple-400 rounded-md p-4"
   >
-    <p class="text-left">Nombre: {{ seller.name }}</p>
-    <p class="text-left">Puntos</p>
-    <p class="text-left">Actuales: {{ seller.points }}</p>
-    <p class="text-left">Restantes: {{ limit - seller.points }}</p>
+    <p class="">Nombre: {{ seller.name }}</p>
+
+    <p class="">Actuales: {{ seller.points }}</p>
+    <p class="">Restantes: {{ limit - seller.points }}</p>
+    <p>Meta: {{ limit }}</p>
   </div>
 </template>
 

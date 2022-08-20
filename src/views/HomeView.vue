@@ -135,10 +135,10 @@ export default defineComponent({
     },
 
     assignSellerIDToImage(images: IUnsplashAPI[]): IImage[] {
-      const sellerIDs = this.sellers.map((s: ISeller) => s.id);
       return images.map((img, index) => ({
         ...img,
-        sellerID: sellerIDs[index],
+        sellerID: this.sellers[index].id,
+        sellerName: this.sellers[index].name,
       }));
     },
 
