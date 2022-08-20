@@ -1,10 +1,13 @@
 <template>
-  <div class="home p-6">
+  <div class="home p-6 relative min-h-[90vh]">
     <h1
       class="font-extrabold text-transparent h-24 text-5xl bg-clip-text bg-gradient-to-r from-blue-500 to-pink-500"
     >
       Imágenes del mundo
     </h1>
+    <span class="text-cyan-200 text-left font-bold underline cursor-pointer"
+      >Ver vendedores</span
+    >
     <search-input @search="search"></search-input>
 
     <section
@@ -37,7 +40,7 @@
         Continúa buscado tus imágenes favoritas.
       </h1>
     </section>
-
+    <seller-list :sellers="sellers"></seller-list>
     <show-seller-winner
       v-if="thereWinner"
       :seller="winner"
@@ -56,6 +59,7 @@ import CardImage from "@/components/CardImage.vue";
 import { LIMIT_TO_WIN } from "@/constants";
 import { mapActions, mapMutations, mapState } from "vuex";
 import ShowSellerWinner from "@/components/ShowSellerWinner.vue";
+import SellerList from "@/components/SellerList.vue";
 
 interface IComponentState {
   imageName: "";
@@ -81,6 +85,7 @@ export default defineComponent({
     SearchInput,
     CardImage,
     ShowSellerWinner,
+    SellerList,
   },
   created() {
     this.setToken();
