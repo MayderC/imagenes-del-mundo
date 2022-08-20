@@ -3,4 +3,7 @@ export interface ISeller {
   id: number;
   description: string;
   points: number;
+  status: string;
+  identification: string;
+  observations: string;
 }

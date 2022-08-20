@@ -30,6 +30,12 @@
 import { defineComponent } from "@vue/runtime-core";
 
 export default defineComponent({
+  props: {
+    winner: {
+      type: Boolean,
+      requerid: true,
+    },
+  },
   data() {
     return {
       toSearch: "",

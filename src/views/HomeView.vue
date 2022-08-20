@@ -7,7 +7,9 @@
     </h1>
     <search-input @search="search"></search-input>
 
-    <section class="flex gap-4 justify-center flex-wrap mt-6 min-w-[300px] p-6">
+    <section
+      class="flex gap-4 justify-center flex-wrap max-w-3xl m-auto mt-6 min-w-[300px] p-6"
+    >
       <loading-spinner
         v-if="canShowSpinner"
         class="mt-6 m-auto"
@@ -35,6 +37,11 @@
         Continúa buscado tus imágenes favoritas.
       </h1>
     </section>
+
+    <show-seller-winner
+      v-if="thereWinner"
+      :seller="winner"
+    ></show-seller-winner>
   </div>
 </template>
 
@@ -46,15 +53,16 @@ import { IImage, IUnsplashAPI } from "@/interfaces/image.interface";
 import LoadingSpinner from "@/components/LoadingSpinner.vue";
 import SearchInput from "@/components/SearchInput.vue";
 import CardImage from "@/components/CardImage.vue";
-import { LIMIT_TO_WIN, POINTS } from "@/constants";
-//import { mapState } from "vuex";
+import { LIMIT_TO_WIN } from "@/constants";
+import { mapActions, mapMutations, mapState } from "vuex";
+import ShowSellerWinner from "@/components/ShowSellerWinner.vue";
 
 interface IComponentState {
   imageName: "";
-  sellers: ISeller[];
   images: IImage[];
   canShowSpinner: boolean;
-  total_points: number;
+  winner: ISeller;
+  thereWinner: boolean;
 }
 
 export default defineComponent({
@@ -62,47 +70,58 @@ export default defineComponent({
   data(): IComponentState {
     return {
       imageName: "",
-      sellers: [
-        { id: 1, points: 0 },
-        { id: 2, points: 0 },
-        { id: 3, points: 0 },
-      ] as ISeller[],
       images: [] as IImage[],
       canShowSpinner: false,
-      total_points: 0,
+      winner: {} as ISeller,
+      thereWinner: false,
     };
   },
   components: {
     LoadingSpinner,
     SearchInput,
     CardImage,
+    ShowSellerWinner,
   },
-
+  created() {
+    this.setToken();
+    this.actionGetSellers();
+  },
+  computed: {
+    ...mapState(["sellers", "total_points"]),
+  },
   methods: {
+    ...mapMutations(["setToken", "addPointsToSeller", "sumTotalPoints"]),
+    ...mapActions(["actionGetSellers"]),
+
     async search(name: string) {
       this.images = [];
       this.canShowSpinner = true;
+
       const imagesWithoutSeller = await getImages(name);
-      const firstThreeImages =
-        this.selectFirstThree<IUnsplashAPI>(imagesWithoutSeller);
-      this.images = this.assignSellerIDToImage(firstThreeImages);
+      const firstImages = this.selectImages(imagesWithoutSeller);
+
       this.canShowSpinner = false;
+      this.images = this.assignSellerIDToImage(firstImages);
     },
 
     like(sellerID: number) {
-      const index = this.addPoints(sellerID);
-      if (!this.isWinner(index)) return;
+      const index = this.sellerToaddPoints(sellerID);
+      if (this.isWinner(index) == false || index === -1) return;
 
-      //winner
-      //todo: next steps
+      this.winner = this.sellers[index];
+      this.thereWinner = true;
+    },
+
+    makeInvoice() {
+      console.log("invoice");
     },
 
     //this method also, return the index where the points were added
-    addPoints(sellerID: number): number {
+    sellerToaddPoints(sellerID: number): number {
       for (let i = 0; i < this.sellers.length; i++) {
         if (this.sellers[i].id === sellerID) {
-          this.sellers[i].points += POINTS;
-          this.total_points += POINTS;
+          this.addPointsToSeller(i);
+          this.sumTotalPoints();
           this.images = [];
           return i;
         }
@@ -111,16 +130,15 @@ export default defineComponent({
     },
 
     assignSellerIDToImage(images: IUnsplashAPI[]): IImage[] {
-      const sellerIDs = this.sellers.map((s) => s.id);
+      const sellerIDs = this.sellers.map((s: ISeller) => s.id);
       return images.map((img, index) => ({
         ...img,
         sellerID: sellerIDs[index],
       }));
     },
 
-    //todo, rename and change, 3 to sellers.length
-    selectFirstThree<T>(arr: T[]): T[] {
-      return arr.splice(0, 3);
+    selectImages(arr: IUnsplashAPI[]): IUnsplashAPI[] {
+      return arr.splice(0, this.sellers.length);
     },
 
     isWinner(index: number) {
