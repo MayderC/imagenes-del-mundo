@@ -1,5 +1,6 @@
 import { IInvoiceRequest } from "@/interfaces/invoice.interface";
 import { IInvoiceResponse } from "@/interfaces/invoiceResponse.interface";
+import { IProductItemResponse } from "@/interfaces/productItem.interface";
 import { ISeller } from "./../interfaces/seller.interface";
 
 export const getSellers = async (token: string): Promise<ISeller[]> => {
@@ -29,5 +30,21 @@ export const makeInvioce = async (
     },
     body: JSON.stringify(data),
   });
+  return await response.json();
+};
+
+export const getProductItem = async (
+  limit: number
+): Promise<IProductItemResponse[]> => {
+  const response = await fetch(
+    `https://api.alegra.com/api/v1/items/?limit=${limit}`,
+    {
+      method: "GET",
+      headers: {
+        authorization: "Basic ",
+      },
+    }
+  );
+
   return await response.json();
 };
