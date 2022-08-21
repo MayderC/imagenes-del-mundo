@@ -2,49 +2,35 @@ import { IInvoiceRequest } from "@/interfaces/invoice.interface";
 import { IInvoiceResponse } from "@/interfaces/invoiceResponse.interface";
 import { IProductItemResponse } from "@/interfaces/productItem.interface";
 import { ISeller } from "./../interfaces/seller.interface";
+import { apiAlegra } from "./httpInstance";
 
-export const getSellers = async (token: string): Promise<ISeller[]> => {
-  const response = await fetch("https://api.alegra.com/api/v1/sellers/", {
-    method: "GET",
-    headers: {
-      Accept: "*/*",
-      authorization: "Basic " + token,
-      "accept-encoding": "gzip, deflate",
-    },
-  });
-
-  const data = await response.json();
-  return data;
+export const getSellers = async (): Promise<ISeller[]> => {
+  try {
+    const res = await apiAlegra.get("/sellers");
+    return res.data;
+  } catch (error) {
+    throw new Error("Error: get sellers");
+  }
 };
 
 export const makeInvioce = async (
   data: IInvoiceRequest
 ): Promise<IInvoiceResponse> => {
-  const response = await fetch("https://api.alegra.com/api/v1/invoices", {
-    method: "POST",
-    headers: {
-      Accept: "*/*",
-      authorization: "Basic " + "",
-      "accept-encoding": "gzip, deflate",
-      "content-type": "application/json",
-    },
-    body: JSON.stringify(data),
-  });
-  return await response.json();
+  try {
+    const res = await apiAlegra.post("/invoices", data);
+    return res.data;
+  } catch (error) {
+    throw new Error("Error: post invoice");
+  }
 };
 
 export const getProductItem = async (
   limit: number
 ): Promise<IProductItemResponse[]> => {
-  const response = await fetch(
-    `https://api.alegra.com/api/v1/items/?limit=${limit}`,
-    {
-      method: "GET",
-      headers: {
-        authorization: "Basic",
-      },
-    }
-  );
-
-  return await response.json();
+  try {
+    const res = await apiAlegra.get(`/items/?limit=${limit}`);
+    return res.data;
+  } catch (error) {
+    throw new Error("Error: get product");
+  }
 };

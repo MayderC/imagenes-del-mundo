@@ -53,7 +53,7 @@ export default createStore<IState>({
   },
   actions: {
     async actionGetSellers(ctx) {
-      const sellers = await getSellers(ctx.state.token);
+      const sellers = await getSellers();
       //these seller don't have the points property, was used map to add
       const activeSeller = sellers.filter((s) => s.status === SELLER_ACTIVE);
       const sellerWithPoints = activeSeller.map((s) => {

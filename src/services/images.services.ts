@@ -1,9 +1,11 @@
 import { IUnsplashAPI } from "@/interfaces/image.interface";
+import { apiUnsplash } from "./httpInstance";
 
 export const getImages = async (name: string): Promise<IUnsplashAPI[]> => {
-  const response = await fetch(
-    `https://api.unsplash.com/search/photos?&query=${name}&client_id=${process.env.VUE_APP_ACCES_PUBLIC_KEY}`
-  );
-  const data = await response.json();
-  return data.results;
+  try {
+    const res = await apiUnsplash.get(`/search/photos?&query=${name}`);
+    return res.data.results;
+  } catch (error) {
+    throw new Error("Error");
+  }
 };
