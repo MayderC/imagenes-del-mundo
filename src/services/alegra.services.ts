@@ -41,7 +41,7 @@ export const getProductItem = async (
     {
       method: "GET",
       headers: {
-        authorization: "Basic ",
+        authorization: "Basic",
       },
     }
   );

@@ -16,6 +16,8 @@
         />
       </svg>
       <input
+        ref="input"
+        id="search"
         type="text"
         v-model="toSearch"
         placeholder="Search"
@@ -42,6 +44,8 @@ export default defineComponent({
   },
   methods: {
     search() {
+      const ref = this.$refs["input"] as HTMLElement;
+      ref.blur();
       this.$emit("search", this.toSearch);
       this.toSearch = "";
     },

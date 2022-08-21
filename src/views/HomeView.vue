@@ -1,5 +1,5 @@
 <template>
-  <div class="home p-6 relative min-h-[95vh]">
+  <div ref="container" class="home p-6 relative min-h-[95vh]">
     <h1
       class="font-extrabold text-transparent h-24 text-5xl bg-clip-text bg-gradient-to-r from-blue-500 to-pink-500"
     >
