@@ -1,15 +1,10 @@
 <template>
-  <div class="home p-6 relative min-h-[90vh]">
+  <div class="home p-6 relative min-h-[95vh]">
     <h1
       class="font-extrabold text-transparent h-24 text-5xl bg-clip-text bg-gradient-to-r from-blue-500 to-pink-500"
     >
       Imágenes del mundo
     </h1>
-    <p
-      class="text-cyan-200 mt-6 text-right absolute bottom-0 font-bold underline cursor-pointer"
-    >
-      Ver vendedores
-    </p>
     <search-input @search="search"></search-input>
 
     <section
@@ -44,11 +39,21 @@
         </h1>
       </div>
     </section>
-    <seller-list :sellers="sellers"></seller-list>
+    <seller-list
+      v-if="canShowSellers"
+      @close="canShowSellers = false"
+      :sellers="sellers"
+    ></seller-list>
     <show-seller-winner
       v-if="thereWinner"
       :seller="winner"
     ></show-seller-winner>
+    <p
+      @click="toggleSellerList"
+      class="text-cyan-200 mt-6 text-right absolute bottom-4 font-bold underline cursor-pointer"
+    >
+      Ver vendedores
+    </p>
   </div>
 </template>
 
@@ -68,6 +73,7 @@ interface IComponentState {
   imageName: "";
   images: IImage[];
   canShowSpinner: boolean;
+  canShowSellers: boolean;
 }
 
 export default defineComponent({
@@ -77,6 +83,7 @@ export default defineComponent({
       imageName: "",
       images: [] as IImage[],
       canShowSpinner: false,
+      canShowSellers: false,
     };
   },
   components: {
@@ -89,6 +96,10 @@ export default defineComponent({
   created() {
     this.setToken();
     this.actionGetSellers();
+
+    if (window.matchMedia("(min-width: 1360px)").matches) {
+      this.canShowSellers = true;
+    }
   },
   computed: {
     ...mapState(["sellers", "total_points", "winner", "thereWinner"]),
@@ -123,8 +134,9 @@ export default defineComponent({
       this.setThereWinner(true);
     },
 
-    makeInvoice() {
-      console.log("invoice");
+    toggleSellerList() {
+      this.canShowSellers = !this.canShowSellers;
+      window.scrollTo({ top: 0, behavior: "smooth" });
     },
 
     //this method also, return the index where the points were added
