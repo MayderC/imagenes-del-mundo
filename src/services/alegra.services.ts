@@ -13,7 +13,7 @@ export const getSellers = async (): Promise<ISeller[]> => {
   }
 };
 
-export const makeInvioce = async (
+export const makeInvoice = async (
   data: IInvoiceRequest
 ): Promise<IInvoiceResponse> => {
   try {
@@ -31,6 +31,7 @@ export const getProductItem = async (
     const res = await apiAlegra.get(`/items/?limit=${limit}`);
     return res.data;
   } catch (error) {
+    console.log(error);
     throw new Error("Error: get product");
   }
 };
