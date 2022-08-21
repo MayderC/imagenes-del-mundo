@@ -67,4 +67,5 @@ export interface IUnsplashAPI {
 
 export interface IImage extends IUnsplashAPI {
   sellerID: number;
+  sellerName: string;
 }

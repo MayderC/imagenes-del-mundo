@@ -16,7 +16,8 @@
         />
       </svg>
       <input
-        autofocus="true"
+        ref="input"
+        id="search"
         type="text"
         v-model="toSearch"
         placeholder="Search"
@@ -30,6 +31,12 @@
 import { defineComponent } from "@vue/runtime-core";
 
 export default defineComponent({
+  props: {
+    winner: {
+      type: Boolean,
+      requerid: true,
+    },
+  },
   data() {
     return {
       toSearch: "",
@@ -37,7 +44,10 @@ export default defineComponent({
   },
   methods: {
     search() {
+      const ref = this.$refs["input"] as HTMLElement;
+      ref.blur();
       this.$emit("search", this.toSearch);
+      this.toSearch = "";
     },
   },
 });

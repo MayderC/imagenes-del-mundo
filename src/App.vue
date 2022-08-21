@@ -1,8 +1,11 @@
 <template>
-  <nav>
-    <router-link to="/">Inicio</router-link> |
-    <router-link to="/about">Vendores</router-link>
+  <!--
+    
+    <nav>
+      <router-link to="/">Inicio</router-link> |
+    <router-link to="/invoice">Factura</router-link>
   </nav>
+    -->
   <router-view />
 </template>
 
