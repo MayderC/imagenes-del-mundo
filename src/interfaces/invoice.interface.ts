@@ -2,6 +2,7 @@ export interface IItem {
   id: number;
   price: number;
   quantity: number;
+  name?: string;
   description?: string;
   discount?: number;
 }
