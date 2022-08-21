@@ -50,7 +50,8 @@
     ></show-seller-winner>
     <p
       @click="toggleSellerList"
-      class="text-cyan-200 mt-6 text-right absolute bottom-4 font-bold underline cursor-pointer"
+      v-if="!canShowSellers"
+      class="text-cyan-200 text-left relative bottom-0 left-4 font-bold underline cursor-pointer"
     >
       Ver vendedores
     </p>
@@ -96,10 +97,6 @@ export default defineComponent({
   created() {
     this.setToken();
     this.actionGetSellers();
-
-    if (window.matchMedia("(min-width: 1360px)").matches) {
-      this.canShowSellers = true;
-    }
   },
   computed: {
     ...mapState(["sellers", "total_points", "winner", "thereWinner"]),
