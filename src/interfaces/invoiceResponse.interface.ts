@@ -25,12 +25,19 @@ export interface Warehouse {
   name: string;
 }
 
+export interface Seller {
+  id: number;
+  name: string;
+  identification: string;
+  observations: string;
+}
+
 export interface PriceList {
   id: number;
   name: string;
 }
 
-export interface IItemResponse {
+export interface Item {
   name: string;
   description?: any;
   price: number;
@@ -61,8 +68,8 @@ export interface IInvoiceResponse {
   balance: number;
   decimalPrecision: string;
   warehouse: Warehouse;
-  seller?: any;
+  seller: Seller;
   priceList: PriceList;
-  items: IItemResponse[];
+  items: Item[];
   costCenter?: any;
 }

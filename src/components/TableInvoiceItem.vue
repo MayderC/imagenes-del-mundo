@@ -24,6 +24,7 @@
           <th class="py-4 px-6">{{ item.name }}</th>
           <th class="py-4 px-6">{{ item.quantity }}</th>
           <th class="py-4 px-6">{{ item.price }}</th>
+          <th class="py-4 px-6">{{ item.price * item.quantity || "" }}</th>
         </tr>
       </tbody>
     </table>

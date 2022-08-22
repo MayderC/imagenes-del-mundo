@@ -31,7 +31,6 @@ export const getProductItem = async (
     const res = await apiAlegra.get(`/items/?limit=${limit}`);
     return res.data;
   } catch (error) {
-    console.log(error);
     throw new Error("Error: get product");
   }
 };
