@@ -145,6 +145,7 @@ import { IInvoiceResponse } from "@/interfaces/invoiceResponse.interface";
 import { IProductItemResponse } from "@/interfaces/productItem.interface";
 import { ISeller } from "@/interfaces/seller.interface";
 import { getProductItem, makeInvoice } from "@/services/alegra.services";
+import store from "@/store";
 import { defineComponent } from "vue";
 import { mapMutations, mapState } from "vuex";
 
@@ -186,7 +187,8 @@ export default defineComponent({
     });
   },
   computed: {
-    ...mapState(["total_points", "winner"]),
+    total_points: (): number => store.state.total_points,
+    winner: (): ISeller => store.state.winner,
   },
   methods: {
     ...mapMutations(["resetWinner", "setThereWinner", "resetTotalPoints"]),
