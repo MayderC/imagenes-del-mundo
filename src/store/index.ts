@@ -5,6 +5,7 @@ import { login } from "./../services/auth.services";
 import { getSellers } from "./../services/alegra.services";
 import { SELLER_ACTIVE, START_POINTS } from "@/constants";
 import { POINTS } from "./../constants/index";
+import { SET_SELLERS } from "./commits";
 
 export default createStore<IState>({
   state: {
@@ -33,7 +34,7 @@ export default createStore<IState>({
     },
 
     resetTotalPoints(state: IState) {
-      state.total_points = 0;
+      state.total_points = START_POINTS;
     },
 
     setToken(state: IState) {
@@ -50,6 +51,10 @@ export default createStore<IState>({
     setWinner(state: IState, winner: ISeller) {
       state.winner = { ...winner };
     },
+
+    resetWinner(state: IState) {
+      state.winner = {} as ISeller;
+    },
   },
   actions: {
     async actionGetSellers(ctx) {
@@ -59,7 +64,7 @@ export default createStore<IState>({
       const sellerWithPoints = activeSeller.map((s) => {
         return { ...s, points: START_POINTS };
       });
-      ctx.commit("setSellers", sellerWithPoints);
+      ctx.commit(SET_SELLERS, sellerWithPoints);
     },
   },
   modules: {},

@@ -13,7 +13,7 @@ export const getSellers = async (): Promise<ISeller[]> => {
   }
 };
 
-export const makeInvioce = async (
+export const makeInvoice = async (
   data: IInvoiceRequest
 ): Promise<IInvoiceResponse> => {
   try {

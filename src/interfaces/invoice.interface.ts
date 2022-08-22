@@ -10,7 +10,15 @@ export interface IItem {
 export interface IInvoiceRequest {
   date: string;
   dueDate: string;
-  client: number;
+  client: string;
   items: IItem[];
   seller: number;
+  retentions: [];
+  payments: [];
+  remissions: [];
+  comments: [];
+  quotas: [];
+  stamp: {
+    generateStamp: boolean;
+  };
 }

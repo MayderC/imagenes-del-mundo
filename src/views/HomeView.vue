@@ -8,7 +8,7 @@
     <search-input @search="search"></search-input>
 
     <section
-      class="flex gap-4 justify-center flex-wrap max-w-3xl m-auto mt-6 min-w-[300px] p-6"
+      class="flex gap-4 justify-center flex-wrap max-w-3xl m-auto mt-6 min-w-[280px] p-6"
     >
       <loading-spinner
         v-if="canShowSpinner"
@@ -44,17 +44,18 @@
       @close="canShowSellers = false"
       :sellers="sellers"
     ></seller-list>
+
+    <div
+      @click="toggleSellerList"
+      v-if="!canShowSellers"
+      class="text-white rounded-md w-full md:w-40 top-0 py-2 p-x-6 bg-gradient-to-r from-blue-500 to-pink-500 relative right-0 font-bold cursor-pointer"
+    >
+      <p>Ver vendedores</p>
+    </div>
     <show-seller-winner
       v-if="thereWinner"
       :seller="winner"
     ></show-seller-winner>
-    <p
-      @click="toggleSellerList"
-      v-if="!canShowSellers"
-      class="text-cyan-200 text-left relative bottom-0 left-4 font-bold underline cursor-pointer"
-    >
-      Ver vendedores
-    </p>
   </div>
 </template>
 
@@ -125,6 +126,11 @@ export default defineComponent({
 
     like(sellerID: number) {
       const index = this.sellerToaddPoints(sellerID);
+
+      setTimeout(() => {
+        this.images = [];
+      }, 200);
+
       if (this.isWinner(index) == false || index === -1) return;
 
       this.setWinner(this.sellers[index]);
@@ -142,7 +148,6 @@ export default defineComponent({
         if (this.sellers[i].id === sellerID) {
           this.addPointsToSeller(i);
           this.sumTotalPoints();
-          this.images = [];
           return i;
         }
       }
