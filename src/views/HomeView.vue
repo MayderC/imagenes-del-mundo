@@ -48,7 +48,7 @@
     <div
       @click="toggleSellerList"
       v-if="!canShowSellers"
-      class="text-white rounded-md w-full md:w-40 top-0 py-2 p-x-6 bg-gradient-to-r from-blue-500 to-pink-500 relative right-0 font-bold cursor-pointer"
+      class="text-white rounded-md w-full md:w-40 top-0 py-2 p-x-6 bg-gradient-to-r from-blue-600 to-pink-600 relative right-0 font-bold cursor-pointer"
     >
       <p>Ver vendedores</p>
     </div>
@@ -67,7 +67,7 @@ import LoadingSpinner from "@/components/LoadingSpinner.vue";
 import SearchInput from "@/components/SearchInput.vue";
 import CardImage from "@/components/CardImage.vue";
 import { LIMIT_TO_WIN } from "@/constants";
-import { mapActions, mapMutations, mapState } from "vuex";
+import { mapActions, mapMutations } from "vuex";
 import ShowSellerWinner from "@/components/ShowSellerWinner.vue";
 import SellerList from "@/components/SellerList.vue";
 import { ISeller } from "@/interfaces/seller.interface";
