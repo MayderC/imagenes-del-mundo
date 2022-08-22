@@ -70,6 +70,8 @@ import { LIMIT_TO_WIN } from "@/constants";
 import { mapActions, mapMutations, mapState } from "vuex";
 import ShowSellerWinner from "@/components/ShowSellerWinner.vue";
 import SellerList from "@/components/SellerList.vue";
+import { ISeller } from "@/interfaces/seller.interface";
+import store from "@/store";
 
 interface IComponentState {
   imageName: "";
@@ -100,7 +102,10 @@ export default defineComponent({
     this.actionGetSellers();
   },
   computed: {
-    ...mapState(["sellers", "total_points", "winner", "thereWinner"]),
+    total_points: (): number => store.state.total_points,
+    thereWinner: (): boolean => store.state.thereWinner,
+    sellers: (): ISeller[] => store.state.sellers,
+    winner: (): ISeller => store.state.winner,
   },
   methods: {
     ...mapMutations([
@@ -117,7 +122,7 @@ export default defineComponent({
       this.canShowSpinner = true;
 
       const imagesWithoutSeller = await getImages(name);
-      if (imagesWithoutSeller.length < this.sellers) return;
+      if (imagesWithoutSeller.length < this.sellers.length) return;
 
       const firstImages = this.selectImages(imagesWithoutSeller);
       this.canShowSpinner = false;
