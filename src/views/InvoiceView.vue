@@ -21,7 +21,7 @@
             Fecha: <span>{{ invoiceRequest.date }}</span>
           </p>
           <p>
-            Fecha de expiración: <span>{{ invoiceRequest.dueDate }}</span>
+            Vencimiento: <span>{{ invoiceRequest.dueDate }}</span>
           </p>
         </div>
         <div class="mt-4">
@@ -38,6 +38,7 @@
               Total: {{ getCurrencyFormat(total_points * item.price || 0) }}
             </p>
           </div>
+
           <button
             @click="sendData"
             :disabled="wasSent"
@@ -53,7 +54,7 @@
           class="font-semibold uppercase space-y-2 text-purple-300 text-sm"
         >
           <div class="mb-8">
-            <h2>Imagenes del Mundo</h2>
+            <h2>Imágenes del Mundo</h2>
             <p>
               Factura ID: <span>{{ invoiceResponse.id }}</span>
             </p>
@@ -79,13 +80,13 @@
                 }}</span>
               </p>
               <p>
-                identificación:
+                Identificación:
                 <span class="text-purple-200">{{
                   invoiceResponse.client?.id
                 }}</span>
               </p>
               <p>
-                Telefono:
+                Teléfono:
                 <span class="text-purple-200">{{
                   invoiceResponse.client?.phonePrimary
                 }}</span>
@@ -147,7 +148,7 @@ import { ISeller } from "@/interfaces/seller.interface";
 import { getProductItem, makeInvoice } from "@/services/alegra.services";
 import store from "@/store";
 import { defineComponent } from "vue";
-import { mapMutations, mapState } from "vuex";
+import { mapMutations } from "vuex";
 
 interface IComponentState {
   invoiceRequest: IInvoiceRequest;
