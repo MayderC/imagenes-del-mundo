@@ -141,7 +141,6 @@
           <div class="w-full mt-4 flex">
             <button
               @click="startAgain"
-              :class="{ 'bg-zinc-900 hover:bg-zinc-900': wasSent }"
               class="bg-zinc-600 mt-4 text-gray-300 py-2 px-6 md:w-auto w-full rounded-md hover:bg-zinc-700"
             >
               Comenzar de Nuevo
