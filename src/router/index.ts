@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import store from "@/store";
-
+import NotFound from "@/views/NotFound.vue";
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
@@ -17,19 +17,19 @@ const routes: Array<RouteRecordRaw> = [
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/InvoiceView.vue"),
   },
+  { path: "/:pathMatch(.*)", name: "NotFound", component: NotFound },
 ];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
 });
-/*
+
 router.beforeEach((to, from, next) => {
   if (store.state.thereWinner == false && to.path === "/invoice") {
     return next("/");
   }
   next();
 });
-*/
 
 export default router;
