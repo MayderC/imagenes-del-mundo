@@ -122,7 +122,10 @@ export default defineComponent({
       this.canShowSpinner = true;
 
       const imagesWithoutSeller = await getImages(name);
-      if (imagesWithoutSeller.length < this.sellers.length) return;
+      if (imagesWithoutSeller.length < this.sellers.length) {
+        this.canShowSpinner = false;
+        return;
+      }
 
       const firstImages = this.selectImages(imagesWithoutSeller);
       this.canShowSpinner = false;
