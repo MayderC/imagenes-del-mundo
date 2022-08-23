@@ -1,14 +1,17 @@
 <template>
-  <div ref="container" class="home p-6 relative min-h-[95vh]">
+  <div
+    ref="container"
+    class="home flex flex-col p-4 relative md:pt-24 min-h-[100vh]"
+  >
     <h1
       class="font-extrabold text-transparent h-24 text-5xl bg-clip-text bg-gradient-to-r from-blue-500 to-pink-500"
     >
       Imágenes del mundo
     </h1>
-    <search-input @search="search"></search-input>
+    <search-input class="mt-14 w-full" @search="search"></search-input>
 
     <section
-      class="flex gap-4 justify-center flex-wrap max-w-3xl m-auto mt-6 min-w-[280px] p-6"
+      class="flex gap-y-4 mm:gap-x-4 min-h-[270px] justify-center flex-wrap max-w-3xl m-auto mt-3 min-w-[280px] p-6"
     >
       <loading-spinner
         v-if="canShowSpinner"
@@ -45,17 +48,17 @@
       :sellers="sellers"
     ></seller-list>
 
-    <div
-      @click="toggleSellerList"
-      v-if="!canShowSellers"
-      class="text-white rounded-md w-full md:w-40 top-0 py-2 p-x-6 bg-gradient-to-r from-blue-600 to-pink-600 relative right-0 font-bold cursor-pointer"
-    >
-      <p>Ver vendedores</p>
-    </div>
     <show-seller-winner
       v-if="thereWinner"
       :seller="winner"
     ></show-seller-winner>
+    <div
+      @click="toggleSellerList"
+      v-if="!canShowSellers"
+      class="text-white rounded-md w-full md:w-40 py-2 p-x-6 bg-gradient-to-r from-blue-600 to-pink-600 relative md:absolute right-0 left-0 m-auto md:top-44 font-bold cursor-pointer"
+    >
+      <p>Ver vendedores</p>
+    </div>
   </div>
 </template>
 
