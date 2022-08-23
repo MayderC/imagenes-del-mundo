@@ -38,15 +38,30 @@
               Total: {{ getCurrencyFormat(total_points * item.price || 0) }}
             </p>
           </div>
-
-          <button
-            @click="sendData"
-            :disabled="wasSent"
-            :class="{ 'bg-zinc-900 hover:bg-zinc-900': wasSent }"
-            class="bg-zinc-600 mt-4 text-gray-300 py-2 px-6 md:w-32 w-full rounded-md hover:bg-zinc-700"
-          >
-            Enviar
-          </button>
+          <div class="flex relative h-14">
+            <loading-spinner
+              v-if="wasSent"
+              class="absolute left-12 top-5"
+            ></loading-spinner>
+            <button
+              v-else-if="!isInvoiceValid(invoiceRequest)"
+              ref="btn"
+              @click="sendData"
+              class="bg-zinc-600 mt-4 text-gray-300 py-2 px-6 md:w-32 w-full rounded-md hover:bg-zinc-700"
+            >
+              Enviar
+            </button>
+            <span
+              v-else
+              class="text-red-300 font-bold h-5 relative top-6 left-2"
+              >Faltan datos.</span
+            >
+            <span
+              v-if="badRequest"
+              class="text-red-300 font-bold h-5 relative top-6 left-2"
+              >Error al enviar.</span
+            >
+          </div>
         </footer>
       </section>
       <section v-else class="bg-neutral-900 rounded-md p-4 lg:p-10">
@@ -139,6 +154,7 @@
 </template>
 
 <script lang="ts">
+import LoadingSpinner from "@/components/LoadingSpinner.vue";
 import TableInvoiceItem from "@/components/TableInvoiceItem.vue";
 import { CURRENCY_FORMAT } from "@/constants";
 import { IInvoiceRequest, IItem } from "@/interfaces/invoice.interface";
@@ -157,10 +173,11 @@ interface IComponentState {
   isReceived: boolean;
   itemRespose: IProductItemResponse;
   invoiceResponse: IInvoiceResponse;
+  badRequest: boolean;
 }
 
 export default defineComponent({
-  components: { TableInvoiceItem },
+  components: { TableInvoiceItem, LoadingSpinner },
   name: "InvoiceView",
   data(): IComponentState {
     return {
@@ -173,8 +190,13 @@ export default defineComponent({
           generateStamp: true,
         },
       } as IInvoiceRequest,
-      item: {} as IItem,
+      item: {
+        id: 1,
+        quantity: 1,
+        price: 100,
+      } as IItem,
       wasSent: false,
+      badRequest: false,
       isReceived: false,
       itemRespose: {} as IProductItemResponse,
       invoiceResponse: {} as IInvoiceResponse,
@@ -195,10 +217,16 @@ export default defineComponent({
     ...mapMutations(["resetWinner", "setThereWinner", "resetTotalPoints"]),
 
     async sendData() {
-      this.wasSent = true;
-      const res = await makeInvoice(this.invoiceRequest);
-      this.isReceived = true;
-      this.invoiceResponse = res;
+      //if invoice is invalid, the button that handle this method dont show in the dom
+      try {
+        this.wasSent = true;
+        const res = await makeInvoice(this.invoiceRequest);
+        this.isReceived = true;
+        this.invoiceResponse = res;
+      } catch (error) {
+        this.wasSent = false;
+        this.showBadRequestMsg();
+      }
     },
     getDate(date: Date): string {
       return date.toLocaleDateString().split("/").reverse().join("-");
@@ -217,7 +245,7 @@ export default defineComponent({
       this.invoiceRequest.dueDate = this.getDueDate(1, dueDate);
       this.invoiceRequest.seller = winner.id;
 
-      //client id
+      //client id hardcode
       this.invoiceRequest.client = "1";
 
       this.item = {
@@ -240,9 +268,25 @@ export default defineComponent({
       this.resetWinner();
       this.resetTotalPoints();
       this.setThereWinner(false);
-
+      //its not necessary reset the sellers, cause
       // the home ('/') component makes an http request, to get sellers again
       this.$router.push("/");
+    },
+
+    isInvoiceValid(data: IInvoiceRequest): boolean {
+      if (data.items?.length <= 0) return false;
+      if (!data.client) return false;
+      if (!data.date) return false;
+      if (!data.dueDate) return false;
+      if (!data.seller) return false;
+      return true;
+    },
+    showBadRequestMsg() {
+      //conditional render, v-if to show msg
+      this.badRequest = true;
+      setTimeout(() => {
+        this.badRequest = false;
+      }, 600);
     },
   },
 });
