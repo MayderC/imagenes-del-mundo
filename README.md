@@ -23,7 +23,7 @@ VUE_APP_ALEGRA_TOKEN = ***********
 ```
 
 
-In the folder **constants** you can modify some varibales to cgange funcionality like
+In the folder **constants** you can modify some variables to change funcionality like
 
 - Start points
 - Points to add
