@@ -33,12 +33,12 @@ In the folder **constants** you can modify some varibales to cgange funcionality
 
 Tools and technologies used
 
-TypeScript 
-Vuejs
-Vuex
-Axios
-Tailwind
-Netlify (hosting)
+- TypeScript
+- Vuejs
+- Vuex
+- Axios
+- Tailwind
+- Netlify (hosting)
 
 
 You can see this project deployed  <a href="https://imagenes-del-mundo-may.netlify.app/" target="_blank">here.</a> 
