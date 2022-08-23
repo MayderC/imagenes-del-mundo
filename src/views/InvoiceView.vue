@@ -44,7 +44,7 @@
               class="absolute left-12 top-5"
             ></loading-spinner>
             <button
-              v-else-if="!isInvoiceValid(invoiceRequest)"
+              v-else-if="isInvoiceValid(invoiceRequest)"
               ref="btn"
               @click="sendData"
               class="bg-zinc-600 mt-4 text-gray-300 py-2 px-6 md:w-32 w-full rounded-md hover:bg-zinc-700"
