@@ -1,9 +1,7 @@
 <template>
   <div class="overflow-x-auto relative rounded-md">
-    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-      <thead
-        class="text-xs text-zinc-700 uppercase bg-gray-50 dark:bg-zinc-700 dark:text-gray-400"
-      >
+    <table class="w-full text-sm text-left text-gray-400">
+      <thead class="text-xs uppercase bg-zinc-700 text-gray-400">
         <tr>
           <th
             v-for="title in titles"
@@ -19,7 +17,7 @@
         <tr
           v-for="item in items"
           :key="item.id"
-          class="bg-white dark:bg-zinc-800 dark:border-zinc-700"
+          class="bg-zinc-800 border-zinc-700"
         >
           <th class="py-4 px-6">{{ item.name }}</th>
           <th class="py-4 px-6">{{ item.quantity }}</th>

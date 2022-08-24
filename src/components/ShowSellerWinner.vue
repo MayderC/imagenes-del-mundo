@@ -8,10 +8,10 @@
   >
     <div class="relative p-4 w-full max-w-2xl h-auto md:h-auto">
       <!-- Modal content -->
-      <div class="relative bg-white rounded-lg shadow dark:bg-zinc-700">
+      <div class="relative rounded-lg shadow bg-zinc-700">
         <!-- Modal header -->
-        <div class="flex p-4 rounded-t border-b dark:border-gray-600">
-          <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+        <div class="flex p-4 rounded-t border-b border-gray-600">
+          <h3 class="text-xl font-semibold text-white">
             Ganador de la carrera
           </h3>
         </div>
@@ -28,14 +28,12 @@
           </p>
         </div>
         <!-- Modal footer -->
-        <div
-          class="flex p-6 space-x-2 rounded-b border-t border-gray-200 dark:border-gray-600"
-        >
+        <div class="flex p-6 space-x-2 rounded-b border-t border-gray-600">
           <button
             data-modal-toggle="defaultModal"
             @click="() => $router.push('/invoice')"
             type="button"
-            class="text-white rounded-md w-full md:w-40 top-0 py-2 p-x-6 bg-gradient-to-r from-blue-500 hover:bg-pink-600 relative right-0 font-bold cursor-pointer"
+            class="text-white rounded-md w-full md:w-40 top-0 py-2 p-x-6 bg-gradient-to-r from-blue-500 bg-blue-400 hover:bg-pink-500 relative right-0 font-bold cursor-pointer"
           >
             Crear factura
           </button>
@@ -43,7 +41,7 @@
             @click="startAgain"
             data-modal-toggle="defaultModal"
             type="button"
-            class="text-white rounded-md w-full md:w-40 top-0 py-2 p-x-6 bg-gradient-to-r from-blue-500 hover:bg-pink-500 relative right-0 font-bold cursor-pointer"
+            class="text-white rounded-md w-full md:w-40 top-0 py-2 p-x-6 bg-gradient-to-r from-blue-500 bg-blue-400 hover:bg-pink-500 relative right-0 font-bold cursor-pointer"
           >
             Reiniciar carrera
           </button>
