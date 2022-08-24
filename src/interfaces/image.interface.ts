@@ -1,14 +1,3 @@
-export interface IImageGoogleAPI {
-  position: number;
-  thumbnail: string;
-  source: string;
-  title: string;
-  link: string;
-  original: string;
-  is_product: boolean;
-  in_stock?: boolean;
-}
-
 export interface ProfileImage {
   small: string;
   medium: string;
@@ -59,13 +48,12 @@ export interface IUnsplashAPI {
   likes: number;
   liked_by_user: boolean;
   description: string;
-  user: User;
+  user?: User;
   current_user_collections: any[];
   urls: Urls;
-  links: Links2;
+  links?: Links2;
 }
 
-export interface IImage extends IUnsplashAPI {
+export interface IImageDTO extends Pick<IUnsplashAPI, "urls" | "id"> {
   sellerID: number;
-  sellerName: string;
 }
