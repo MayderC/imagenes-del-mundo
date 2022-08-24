@@ -34,7 +34,7 @@
 </template>
 
 <script lang="ts">
-import { IImage } from "@/interfaces/image.interface";
+import { IImageDTO } from "@/interfaces/image.interface";
 import { defineComponent, PropType } from "@vue/runtime-core";
 
 export default defineComponent({
@@ -42,7 +42,7 @@ export default defineComponent({
   props: {
     image: {
       required: true,
-      type: Object as PropType<IImage>,
+      type: Object as PropType<IImageDTO>,
     },
   },
   data() {
