@@ -65,7 +65,7 @@
 <script lang="ts">
 import { getImages } from "@/services/images.services";
 import { defineComponent } from "vue";
-import { IImage, IUnsplashAPI } from "@/interfaces/image.interface";
+import { IImageDTO, IUnsplashAPI } from "@/interfaces/image.interface";
 import LoadingSpinner from "@/components/LoadingSpinner.vue";
 import SearchInput from "@/components/SearchInput.vue";
 import CardImage from "@/components/CardImage.vue";
@@ -78,7 +78,7 @@ import store from "@/store";
 
 interface IComponentState {
   imageName: "";
-  images: IImage[];
+  images: IImageDTO[];
   canShowSpinner: boolean;
   canShowSellers: boolean;
 }
@@ -88,7 +88,7 @@ export default defineComponent({
   data(): IComponentState {
     return {
       imageName: "",
-      images: [] as IImage[],
+      images: [] as IImageDTO[],
       canShowSpinner: false,
       canShowSellers: false,
     };
@@ -165,11 +165,11 @@ export default defineComponent({
       return -1;
     },
 
-    assignSellerIDToImage(images: IUnsplashAPI[]): IImage[] {
+    assignSellerIDToImage(images: IUnsplashAPI[]): IImageDTO[] {
       return images.map((img, index) => ({
-        ...img,
+        urls: img.urls,
+        id: img.id,
         sellerID: this.sellers[index].id,
-        sellerName: this.sellers[index].name,
       }));
     },
 
